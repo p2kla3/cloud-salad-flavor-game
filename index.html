@@ -1,0 +1,435 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#15345d" />
+  <title>一盤，玩出你的風味性格｜CLOUD SALAD</title>
+  <style>
+    :root{
+      --navy:#15345d;
+      --navy2:#0e294b;
+      --gold:#b98b36;
+      --gold2:#d5b56d;
+      --cream:#f8f3eb;
+      --paper:#fffdf9;
+      --ink:#22324b;
+      --muted:#7f786f;
+      --line:#e7d7b8;
+      --shadow:0 18px 45px rgba(20,40,70,.12);
+      --radius:26px;
+    }
+    *{box-sizing:border-box}
+    html,body{margin:0;background:linear-gradient(180deg,#efe8df,#f8f4ef);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Noto Sans TC","PingFang TC","Microsoft JhengHei",sans-serif}
+    body{min-height:100dvh}
+    button,input,select{font:inherit}
+    .app{width:min(100%,620px);margin:0 auto;min-height:100dvh;background:var(--cream);position:relative;overflow:hidden}
+    .topbar{
+      position:sticky;top:0;z-index:20;padding:14px 18px 10px;
+      background:linear-gradient(180deg,rgba(248,243,235,.97),rgba(248,243,235,.88));
+      backdrop-filter:blur(8px)
+    }
+    .brandline{display:flex;align-items:center;justify-content:space-between;gap:12px}
+    .brand{display:flex;align-items:center;gap:10px;min-width:0}
+    .logo{
+      width:38px;height:38px;border-radius:50%;display:grid;place-items:center;
+      color:#f7d986;background:var(--navy);border:1px solid var(--gold2);
+      font-family:Georgia,serif;font-size:10px;letter-spacing:.12em;line-height:1.05;text-align:center;
+      flex:0 0 auto; overflow:hidden;
+    }
+    .logo img{width:100%;height:100%;object-fit:cover}
+    .brand b{font-family:Georgia,"Noto Serif TC",serif;letter-spacing:.12em;color:var(--navy);font-size:13px}
+    .stepcount{font-size:12px;color:var(--muted);white-space:nowrap}
+    .progress{height:6px;background:#e8dfd2;border-radius:999px;margin-top:10px;overflow:hidden}
+    .progress>i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--gold),var(--gold2));border-radius:999px;transition:width .35s ease}
+
+    main{padding:16px 18px 28px}
+    .screen{display:none;animation:in .28s ease}
+    .screen.active{display:block}
+    @keyframes in{from{opacity:.2;transform:translateY(8px)}to{opacity:1;transform:none}}
+
+    .hero,.card{
+      background:rgba(255,253,249,.94);border:1px solid var(--line);border-radius:var(--radius);
+      box-shadow:var(--shadow);overflow:hidden;position:relative
+    }
+    .hero{padding:28px 22px}
+    .hero:before,.card:before{
+      content:"";position:absolute;inset:0;pointer-events:none;
+      background:
+        radial-gradient(circle at 88% 10%,rgba(185,139,54,.12),transparent 20%),
+        radial-gradient(circle at 10% 80%,rgba(21,52,93,.05),transparent 24%);
+    }
+    .eyebrow{font:700 12px Georgia,serif;letter-spacing:.28em;color:var(--gold);text-transform:uppercase}
+    h1,h2{font-family:Georgia,"Noto Serif TC","Songti TC",serif;color:var(--navy);margin:0}
+    h1{font-size:clamp(38px,10vw,58px);line-height:1.1;margin-top:10px}
+    h1 em{font-style:normal;color:var(--gold)}
+    .lead{font-size:18px;font-weight:700;margin:18px 0 8px;color:var(--navy)}
+    .sub{font-size:14px;line-height:1.8;color:#5f5b56;margin:0}
+    .chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px}
+    .chip{padding:8px 11px;border-radius:999px;background:#f4ead8;color:#7f5d1f;border:1px solid #e7d2aa;font-size:12px;font-weight:700}
+    .visual{
+      margin:22px 0 6px;padding:16px;border-radius:22px;background:linear-gradient(135deg,#18385f,#102847);
+      color:#fff;display:grid;grid-template-columns:1fr auto;gap:12px;align-items:center
+    }
+    .visual .icons{font-size:32px;letter-spacing:.06em}
+    .visual b{display:block;font-family:Georgia,serif;font-size:20px;color:#f7d986;margin-bottom:5px}
+    .visual small{opacity:.82;line-height:1.5}
+    .mini-photo{
+      width:82px;height:82px;border-radius:18px;border:1px solid rgba(255,255,255,.3);
+      background:#fff2;object-fit:cover;display:none
+    }
+
+    .card{padding:22px 18px}
+    .stephead{display:flex;align-items:flex-start;gap:12px;margin-bottom:14px}
+    .num{
+      width:46px;height:46px;border-radius:15px;display:grid;place-items:center;flex:0 0 auto;
+      background:var(--navy);color:#f7d986;border:1px solid var(--gold2);
+      font-family:Georgia,serif;font-size:22px;box-shadow:0 8px 22px rgba(21,52,93,.16)
+    }
+    .stephead small{display:block;font:700 11px Georgia,serif;letter-spacing:.2em;color:var(--gold);margin-bottom:3px}
+    h2{font-size:28px;line-height:1.25}
+    .combo{
+      margin:14px 0 10px;padding:13px 14px;border-radius:16px;background:#f7efe1;border:1px solid #e4cfaa;
+      color:var(--navy);font-weight:800;text-align:center;font-size:17px
+    }
+    .prompt{font-size:14px;line-height:1.75;color:#5f5b56;margin:12px 0}
+    .options{display:grid;gap:10px}
+    .option{
+      position:relative;display:flex;align-items:center;gap:11px;padding:13px 14px;border-radius:16px;
+      border:1px solid #dfd2c0;background:#fff;cursor:pointer;transition:.18s ease;user-select:none
+    }
+    .option:hover{transform:translateY(-1px);border-color:#cba65f}
+    .option input{position:absolute;opacity:0;pointer-events:none}
+    .dot{width:22px;height:22px;border-radius:50%;border:2px solid #c8a96c;display:grid;place-items:center;flex:0 0 auto}
+    .dot:after{content:"";width:10px;height:10px;border-radius:50%;background:var(--navy);transform:scale(0);transition:.15s ease}
+    .option:has(input:checked){border-color:var(--gold);background:#fff9ed;box-shadow:0 7px 20px rgba(185,139,54,.10)}
+    .option:has(input:checked) .dot:after{transform:scale(1)}
+    .option strong{font-size:15px}
+    .unlock{
+      margin-top:14px;padding:13px 14px;border-radius:16px;background:#f1e7d5;color:#6f572c;
+      display:none;line-height:1.6;border:1px dashed #d4b570;font-size:14px
+    }
+    .unlock.show{display:block;animation:in .25s ease}
+    .unlock b{color:var(--navy)}
+
+    .nav{display:flex;gap:10px;margin-top:16px}
+    .btn{
+      border:0;border-radius:15px;padding:14px 16px;font-weight:800;cursor:pointer;transition:.18s ease;
+      min-height:48px
+    }
+    .btn:active{transform:scale(.98)}
+    .btn.primary{background:var(--navy);color:#fff;flex:1;box-shadow:0 10px 24px rgba(21,52,93,.2)}
+    .btn.secondary{background:#eee6dc;color:var(--navy)}
+    .btn[disabled]{opacity:.4;cursor:not-allowed;box-shadow:none}
+
+    .builder{display:grid;gap:12px}
+    .field label{display:block;font-size:12px;font-weight:800;color:#766b5d;margin-bottom:6px}
+    .field select,.field input{
+      width:100%;padding:13px 14px;border-radius:14px;border:1px solid #dfd2c0;background:#fff;color:var(--ink);outline:0
+    }
+    .field select:focus,.field input:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(185,139,54,.12)}
+    .result{
+      margin-top:16px;padding:18px;border-radius:20px;background:linear-gradient(135deg,var(--navy),#0b2340);color:#fff;position:relative;overflow:hidden
+    }
+    .result:after{content:"✦";position:absolute;right:18px;top:15px;color:#f4d27a;font-size:32px;opacity:.7}
+    .result small{opacity:.8}
+    .result h3{font-family:Georgia,"Noto Serif TC",serif;font-size:26px;margin:4px 0 8px;color:#f7d986}
+    .result p{margin:5px 0;line-height:1.65;font-size:14px}
+    .secret{margin-top:14px;padding:14px;border-left:3px solid var(--gold);background:#f7efe2;border-radius:0 14px 14px 0;font-size:13px;line-height:1.7}
+    .footer-note{text-align:center;color:#8a8177;font-size:11px;line-height:1.6;margin-top:16px}
+    .tiny{font-size:11px;color:#8a8177}
+    .hidden{display:none!important}
+
+    @media (max-width:380px){
+      main{padding-left:12px;padding-right:12px}
+      .topbar{padding-left:12px;padding-right:12px}
+      .card{padding:18px 14px}
+      h2{font-size:24px}
+      .option{padding:12px}
+    }
+  </style>
+</head>
+<body>
+<div class="app">
+  <div class="topbar">
+    <div class="brandline">
+      <div class="brand">
+        <div class="logo" id="logoBox">CLOUD<br>SALAD</div>
+        <b>FLAVOR GAME</b>
+      </div>
+      <div class="stepcount" id="stepCount">開始</div>
+    </div>
+    <div class="progress"><i id="progressBar"></i></div>
+  </div>
+
+  <main>
+    <!-- 0 / COVER -->
+    <section class="screen active" data-screen="0">
+      <div class="hero">
+        <div class="eyebrow">Flavor Game</div>
+        <h1>一盤，<br>玩出你的<em>風味性格</em></h1>
+        <p class="lead">不用懂起司，也可以開始。</p>
+        <p class="sub">今天先不要急著把所有東西疊在一起。用 5 個小任務，看看同一塊起司可以變幾次味道。</p>
+        <div class="chips">
+          <span class="chip">5 個小任務</span>
+          <span class="chip">不用拿筆</span>
+          <span class="chip">最後完成 Perfect Bite</span>
+        </div>
+        <div class="visual">
+          <div>
+            <b>Cheese × Fruit × Texture</b>
+            <small>每換一樣食材，整口風味就可能重新排列。</small>
+            <div class="icons">🧀 🍇 🥜 🍯</div>
+          </div>
+          <img id="coverPhoto" class="mini-photo" alt="">
+        </div>
+        <div class="nav">
+          <button class="btn primary" onclick="go(1)">開始玩 →</button>
+        </div>
+      </div>
+      <div class="footer-note">沒有標準答案。最好吃的那一口，就是你的答案。</div>
+    </section>
+
+    <!-- 1 -->
+    <section class="screen" data-screen="1">
+      <div class="card">
+        <div class="stephead">
+          <div class="num">1</div>
+          <div><small>STEP 01</small><h2>先吃原味</h2></div>
+        </div>
+        <div class="combo">高達 / 艾曼塔</div>
+        <p class="prompt">不要搭任何東西。記住第一印象：</p>
+        <div class="options" data-name="s1">
+          <label class="option"><input type="radio" name="s1" value="奶香" data-score="milky"><span class="dot"></span><strong>奶香</strong></label>
+          <label class="option"><input type="radio" name="s1" value="鹹香" data-score="sweet"><span class="dot"></span><strong>鹹香</strong></label>
+          <label class="option"><input type="radio" name="s1" value="堅果香" data-score="spice"><span class="dot"></span><strong>堅果香</strong></label>
+          <label class="option"><input type="radio" name="s1" value="柔和" data-score="fresh"><span class="dot"></span><strong>柔和</strong></label>
+          <label class="option"><input type="radio" name="s1" value="濃郁" data-score="milky"><span class="dot"></span><strong>濃郁</strong></label>
+          <label class="option"><input type="radio" name="s1" value="我說不上來" data-score="all"><span class="dot"></span><strong>我說不上來</strong></label>
+        </div>
+        <div class="unlock" id="u1"><b>第一個提示：</b>說不上來也完全正常。先記住「第一感覺」就夠了。</div>
+        <div class="nav"><button class="btn secondary" onclick="go(0)">←</button><button class="btn primary" id="n1" onclick="go(2)" disabled>下一關 →</button></div>
+      </div>
+    </section>
+
+    <!-- 2 -->
+    <section class="screen" data-screen="2">
+      <div class="card">
+        <div class="stephead"><div class="num">2</div><div><small>STEP 02</small><h2>加一點甜</h2></div></div>
+        <div class="combo">高達 × 蜂蜜橄欖油</div>
+        <p class="prompt">再吃一次。你覺得：</p>
+        <div class="options" data-name="s2">
+          <label class="option"><input type="radio" name="s2" value="奶香更明顯" data-score="milky"><span class="dot"></span><strong>奶香更明顯</strong></label>
+          <label class="option"><input type="radio" name="s2" value="甜鹹更好吃" data-score="sweet"><span class="dot"></span><strong>甜鹹更好吃</strong></label>
+          <label class="option"><input type="radio" name="s2" value="變得更厚" data-score="milky"><span class="dot"></span><strong>變得更厚</strong></label>
+          <label class="option"><input type="radio" name="s2" value="我比較喜歡原味" data-score="fresh"><span class="dot"></span><strong>我比較喜歡原味</strong></label>
+        </div>
+        <div class="unlock" id="u2"><b>解鎖：甜 × 脂香</b><br>一點甜味，會改變你對奶香與鹹味的注意順序。</div>
+        <div class="nav"><button class="btn secondary" onclick="go(1)">←</button><button class="btn primary" id="n2" onclick="go(3)" disabled>下一關 →</button></div>
+      </div>
+    </section>
+
+    <!-- 3 -->
+    <section class="screen" data-screen="3">
+      <div class="card">
+        <div class="stephead"><div class="num">3</div><div><small>STEP 03</small><h2>加入脆感</h2></div></div>
+        <div class="combo">高達 × 蜂蜜 × 核桃</div>
+        <p class="prompt">這次除了味道，注意「聲音」和「口感」。</p>
+        <div class="options" data-name="s3">
+          <label class="option"><input type="radio" name="s3" value="更香" data-score="spice"><span class="dot"></span><strong>更香</strong></label>
+          <label class="option"><input type="radio" name="s3" value="更有層次" data-score="all"><span class="dot"></span><strong>更有層次</strong></label>
+          <label class="option"><input type="radio" name="s3" value="太濃了" data-score="fresh"><span class="dot"></span><strong>太濃了</strong></label>
+          <label class="option"><input type="radio" name="s3" value="這口目前第一名" data-score="sweet"><span class="dot"></span><strong>這口目前第一名</strong></label>
+        </div>
+        <div class="unlock" id="u3"><b>解鎖：口感</b><br>味道之外，脆、軟、黏、滑也會改變整體風味。</div>
+        <div class="nav"><button class="btn secondary" onclick="go(2)">←</button><button class="btn primary" id="n3" onclick="go(4)" disabled>下一關 →</button></div>
+      </div>
+    </section>
+
+    <!-- 4 -->
+    <section class="screen" data-screen="4">
+      <div class="card">
+        <div class="stephead"><div class="num">4</div><div><small>STEP 04</small><h2>玩一次甜鹹反差</h2></div></div>
+        <div class="combo">艾曼塔 × Salami × 葡萄</div>
+        <p class="prompt">一次有：<b>奶香 × 鹹鮮 × 果甜 × 肉香</b><br>現在你最先注意到：</p>
+        <div class="options" data-name="s4">
+          <label class="option"><input type="radio" name="s4" value="葡萄" data-score="fresh"><span class="dot"></span><strong>葡萄</strong></label>
+          <label class="option"><input type="radio" name="s4" value="起司" data-score="milky"><span class="dot"></span><strong>起司</strong></label>
+          <label class="option"><input type="radio" name="s4" value="Salami" data-score="meat"><span class="dot"></span><strong>Salami</strong></label>
+          <label class="option"><input type="radio" name="s4" value="香料" data-score="spice"><span class="dot"></span><strong>香料</strong></label>
+          <label class="option"><input type="radio" name="s4" value="全部一起" data-score="all"><span class="dot"></span><strong>全部一起</strong></label>
+        </div>
+        <div class="unlock" id="u4"><b>解鎖：對比</b><br>味道不一定要相似，反差也能讓彼此更明顯。</div>
+        <div class="nav"><button class="btn secondary" onclick="go(3)">←</button><button class="btn primary" id="n4" onclick="go(5)" disabled>下一關 →</button></div>
+      </div>
+    </section>
+
+    <!-- 5 -->
+    <section class="screen" data-screen="5">
+      <div class="card">
+        <div class="stephead"><div class="num">5</div><div><small>STEP 05</small><h2>RESET 挑戰</h2></div></div>
+        <div class="combo">高達 × Coppa → 一口文旦 / 芭樂</div>
+        <p class="prompt">先吃高達 × Coppa，再吃一口水果。嘴巴發生什麼事？</p>
+        <div class="options" data-name="s5">
+          <label class="option"><input type="radio" name="s5" value="突然清爽" data-score="fresh"><span class="dot"></span><strong>突然清爽</strong></label>
+          <label class="option"><input type="radio" name="s5" value="果香變明顯" data-score="fresh"><span class="dot"></span><strong>果香變明顯</strong></label>
+          <label class="option"><input type="radio" name="s5" value="鹹味降低" data-score="sweet"><span class="dot"></span><strong>鹹味降低</strong></label>
+          <label class="option"><input type="radio" name="s5" value="想再吃一口起司" data-score="milky"><span class="dot"></span><strong>想再吃一口起司</strong></label>
+        </div>
+        <div class="unlock" id="u5"><b>解鎖：平衡</b><br>好的搭配，不一定把味道越疊越重。有時候，是幫下一口留下空間。</div>
+        <div class="nav"><button class="btn secondary" onclick="go(4)">←</button><button class="btn primary" id="n5" onclick="go(6)" disabled>創造 Perfect Bite →</button></div>
+      </div>
+    </section>
+
+    <!-- 6 FINAL -->
+    <section class="screen" data-screen="6">
+      <div class="card">
+        <div class="stephead"><div class="num">★</div><div><small>FINAL</small><h2>創造你的 Perfect Bite</h2></div></div>
+        <p class="prompt">自己挑：<b>1 起司 ＋ 1 水果 ＋ 1 肉品或核桃 ＋ 1 脆餅</b></p>
+
+        <div class="builder">
+          <div class="field"><label>1｜起司</label><select id="cheese"><option>高達</option><option>艾曼塔</option></select></div>
+          <div class="field"><label>2｜水果</label><select id="fruit"><option>葡萄</option><option>文旦</option><option>芭樂</option></select></div>
+          <div class="field"><label>3｜肉品或核桃</label><select id="accent"><option>Salami</option><option>Coppa</option><option>核桃</option></select></div>
+          <div class="field"><label>4｜脆餅</label><select id="cracker"><option>北歐脆餅</option><option>原味蘇打餅</option><option>法棍薄片</option></select></div>
+          <div class="field"><label>幫這一口取名字</label><input id="biteName" placeholder="例如：午後金色脆響" maxlength="20"></div>
+        </div>
+
+        <div class="result" id="resultBox">
+          <small>系統猜你是</small>
+          <h3 id="personality">—</h3>
+          <p id="comboText">完成 5 個任務後，這裡會出現你的風味性格。</p>
+          <p id="nameText" class="tiny"></p>
+        </div>
+
+        <div class="secret"><b>一個小秘密：</b>我們以為自己只用舌頭「吃味道」。其實香氣、味覺與口感會一起工作。換一樣食材，整口的風味就可能重新排列。</div>
+
+        <div class="nav">
+          <button class="btn secondary" onclick="go(5)">←</button>
+          <button class="btn primary" onclick="shareResult()">分享我的風味 →</button>
+        </div>
+        <div class="nav" style="margin-top:8px">
+          <button class="btn secondary" style="width:100%" onclick="restart()">重新玩一次</button>
+        </div>
+      </div>
+      <div class="footer-note">沒有標準答案。最好吃的那一口，就是你的答案。</div>
+    </section>
+  </main>
+</div>
+
+<script>
+  // ===== 可改品牌素材 =====
+  // 若你已將 Logo / 商品圖上傳到 meepShop 或自己的 CDN，填入完整 https 圖片網址即可。
+  const BRAND_LOGO_URL = "";      // 例：https://你的圖片網址/logo.png
+  const COVER_PHOTO_URL = "";     // 例：https://你的圖片網址/platter.jpg
+
+  if(BRAND_LOGO_URL){
+    document.getElementById("logoBox").innerHTML = '<img src="'+BRAND_LOGO_URL+'" alt="CLOUD SALAD">';
+  }
+  if(COVER_PHOTO_URL){
+    const p = document.getElementById("coverPhoto");
+    p.src = COVER_PHOTO_URL;
+    p.style.display = "block";
+  }
+
+  const screens = [...document.querySelectorAll(".screen")];
+  const progressBar = document.getElementById("progressBar");
+  const stepCount = document.getElementById("stepCount");
+  let current = 0;
+
+  const labels = ["開始","任務 1 / 5","任務 2 / 5","任務 3 / 5","任務 4 / 5","任務 5 / 5","FINAL"];
+  const progress = [0,16,32,48,64,80,100];
+
+  function go(n){
+    current = n;
+    screens.forEach(s => s.classList.toggle("active", Number(s.dataset.screen) === n));
+    progressBar.style.width = progress[n] + "%";
+    stepCount.textContent = labels[n];
+    window.scrollTo({top:0,behavior:"smooth"});
+    if(n===6) renderFinal();
+  }
+
+  // 選答案後：顯示解鎖、開啟下一關
+  document.querySelectorAll('.options input[type="radio"]').forEach(input=>{
+    input.addEventListener("change", ()=>{
+      const step = input.name.replace("s","");
+      document.getElementById("u"+step)?.classList.add("show");
+      const next = document.getElementById("n"+step);
+      if(next) next.disabled = false;
+    });
+  });
+
+  const personalityNames = {
+    fresh:"清爽派",
+    milky:"奶香派",
+    sweet:"甜鹹派",
+    meat:"肉香派",
+    spice:"香料派",
+    all:"什麼都想加派"
+  };
+
+  function calculatePersonality(){
+    const scores = {fresh:0,milky:0,sweet:0,meat:0,spice:0,all:0};
+    document.querySelectorAll('.options input[type="radio"]:checked').forEach(x=>{
+      if(x.dataset.score) scores[x.dataset.score] += 2;
+    });
+
+    // FINAL 選擇也微量影響結果
+    const cheese = document.getElementById("cheese").value;
+    const fruit = document.getElementById("fruit").value;
+    const accent = document.getElementById("accent").value;
+    if(cheese==="高達" || cheese==="艾曼塔") scores.milky += 1;
+    if(["葡萄","文旦","芭樂"].includes(fruit)) scores.fresh += 1;
+    if(accent==="Salami" || accent==="Coppa") scores.meat += 1;
+    if(accent==="核桃") scores.spice += 1;
+
+    const max = Math.max(...Object.values(scores));
+    const best = Object.keys(scores).filter(k=>scores[k]===max);
+    return best.length>1 ? "all" : best[0];
+  }
+
+  function renderFinal(){
+    const key = calculatePersonality();
+    document.getElementById("personality").textContent = personalityNames[key];
+
+    const cheese = document.getElementById("cheese").value;
+    const fruit = document.getElementById("fruit").value;
+    const accent = document.getElementById("accent").value;
+    const cracker = document.getElementById("cracker").value;
+    document.getElementById("comboText").textContent = `${cheese} × ${fruit} × ${accent} × ${cracker}`;
+
+    const biteName = document.getElementById("biteName").value.trim();
+    document.getElementById("nameText").textContent = biteName ? `你替這一口取名：「${biteName}」` : "";
+  }
+
+  ["cheese","fruit","accent","cracker","biteName"].forEach(id=>{
+    document.getElementById(id).addEventListener("input", renderFinal);
+    document.getElementById(id).addEventListener("change", renderFinal);
+  });
+
+  async function shareResult(){
+    renderFinal();
+    const p = document.getElementById("personality").textContent;
+    const c = document.getElementById("comboText").textContent;
+    const n = document.getElementById("biteName").value.trim();
+    const text = `我的風味性格：${p}\n我的 Perfect Bite：${c}${n ? `\n我叫它「${n}」` : ""}\n#FlavorGame #CloudSalad`;
+    try{
+      if(navigator.share){
+        await navigator.share({title:"我的 Flavor Game 結果", text});
+      }else{
+        await navigator.clipboard.writeText(text);
+        alert("結果已複製，可以貼到 LINE / IG。");
+      }
+    }catch(e){}
+  }
+
+  function restart(){
+    document.querySelectorAll('input[type="radio"]').forEach(i=>i.checked=false);
+    document.querySelectorAll(".unlock").forEach(u=>u.classList.remove("show"));
+    document.querySelectorAll('[id^="n"]').forEach(b=>b.disabled=true);
+    document.getElementById("biteName").value="";
+    go(0);
+  }
+</script>
+</body>
+</html>
