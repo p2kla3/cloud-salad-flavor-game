@@ -1,0 +1,706 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#ede6e1" />
+  <title>一盤，玩出你的風味性格｜Flavor Interaction</title>
+
+  <style>
+    :root{
+      --bg:#f7f3ef;
+      --panel:#ffffff;
+      --brand:#ede6e1;
+      --ink:#232323;
+      --muted:#6e6a66;
+      --line:#ded7d1;
+      --accent:#1f3a4a;
+      --accent-soft:#e8eef1;
+      --danger:#9b3d32;
+      --radius:22px;
+      --shadow:0 14px 34px rgba(27,31,35,.08);
+    }
+
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+
+    body{
+      margin:0;
+      min-height:100vh;
+      background:
+        radial-gradient(circle at top left, rgba(255,255,255,.92), transparent 34%),
+        linear-gradient(180deg,var(--brand) 0%,var(--bg) 42%,#fff 100%);
+      color:var(--ink);
+      font-family:
+        -apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans TC",
+        "PingFang TC","Microsoft JhengHei",Arial,sans-serif;
+      line-height:1.65;
+    }
+
+    button,input{font:inherit}
+
+    .page{
+      width:min(100%,720px);
+      margin:0 auto;
+      min-height:100dvh;
+      padding:
+        max(24px,env(safe-area-inset-top))
+        18px
+        calc(180px + env(safe-area-inset-bottom));
+    }
+
+    .brand-row{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      margin-bottom:28px;
+    }
+
+    .eyebrow{
+      font-size:12px;
+      letter-spacing:.14em;
+      font-weight:700;
+      color:var(--accent);
+      text-transform:uppercase;
+    }
+
+    .version-chip{
+      display:inline-flex;
+      align-items:center;
+      padding:6px 10px;
+      border:1px solid rgba(31,58,74,.16);
+      border-radius:999px;
+      font-size:11px;
+      color:var(--accent);
+      background:rgba(255,255,255,.55);
+    }
+
+    h1{
+      margin:0;
+      font-size:clamp(32px,8vw,54px);
+      line-height:1.06;
+      letter-spacing:-.04em;
+      font-weight:800;
+    }
+
+    .lead{
+      margin:16px 0 0;
+      font-size:17px;
+      color:#474340;
+      max-width:34em;
+    }
+
+    .tech-line{
+      margin-top:18px;
+      display:inline-flex;
+      flex-wrap:wrap;
+      gap:7px;
+      align-items:center;
+      font-size:13px;
+      font-weight:700;
+      color:var(--accent);
+    }
+
+    .tech-line span{
+      padding:7px 10px;
+      border-radius:999px;
+      background:var(--accent-soft);
+    }
+
+    .quick-facts{
+      margin:28px 0 20px;
+      display:grid;
+      gap:10px;
+    }
+
+    .fact{
+      display:grid;
+      grid-template-columns:34px 1fr;
+      gap:12px;
+      align-items:flex-start;
+      padding:14px 15px;
+      background:rgba(255,255,255,.62);
+      border:1px solid rgba(80,70,62,.10);
+      border-radius:16px;
+    }
+
+    .fact-num{
+      width:30px;
+      height:30px;
+      display:grid;
+      place-items:center;
+      border-radius:50%;
+      background:var(--accent);
+      color:#fff;
+      font-size:12px;
+      font-weight:800;
+    }
+
+    .fact strong{
+      display:block;
+      margin-bottom:2px;
+      font-size:14px;
+    }
+
+    .fact p{
+      margin:0;
+      font-size:13px;
+      color:var(--muted);
+    }
+
+    .terms-card{
+      margin-top:18px;
+      background:var(--panel);
+      border:1px solid rgba(62,57,53,.10);
+      border-radius:var(--radius);
+      box-shadow:var(--shadow);
+      overflow:hidden;
+    }
+
+    .terms-head{
+      padding:18px 18px 13px;
+      border-bottom:1px solid var(--line);
+    }
+
+    .terms-head h2{
+      margin:0;
+      font-size:18px;
+      letter-spacing:-.02em;
+    }
+
+    .terms-head p{
+      margin:3px 0 0;
+      font-size:12px;
+      color:var(--muted);
+    }
+
+    .terms-scroll{
+      height:min(38dvh,390px);
+      min-height:280px;
+      overflow-y:auto;
+      overscroll-behavior:contain;
+      padding:18px;
+      scrollbar-width:thin;
+      scrollbar-color:#aaa transparent;
+    }
+
+    .terms-scroll h3{
+      margin:22px 0 6px;
+      font-size:15px;
+    }
+
+    .terms-scroll h3:first-child{margin-top:0}
+
+    .terms-scroll p{
+      margin:0 0 10px;
+      font-size:13.5px;
+      color:#4e4945;
+    }
+
+    .terms-scroll ul{
+      margin:6px 0 12px;
+      padding-left:20px;
+      color:#4e4945;
+      font-size:13.5px;
+    }
+
+    .notice{
+      padding:12px 13px;
+      margin:12px 0;
+      border-radius:14px;
+      background:#f6f7f8;
+      border:1px solid #e5e8ea;
+      font-size:12.5px;
+      color:#555;
+    }
+
+    .scroll-hint{
+      position:relative;
+      padding:10px 18px 12px;
+      text-align:center;
+      font-size:11px;
+      color:var(--muted);
+      border-top:1px solid var(--line);
+      background:linear-gradient(180deg,#fff,#fbfaf9);
+    }
+
+    .consent-dock{
+      position:fixed;
+      z-index:20;
+      left:50%;
+      transform:translateX(-50%);
+      bottom:0;
+      width:min(100%,720px);
+      padding:14px 18px calc(14px + env(safe-area-inset-bottom));
+      background:rgba(250,248,246,.95);
+      backdrop-filter:blur(14px);
+      -webkit-backdrop-filter:blur(14px);
+      border-top:1px solid rgba(68,62,58,.12);
+      box-shadow:0 -12px 32px rgba(35,35,35,.08);
+    }
+
+    .check-row{
+      display:grid;
+      grid-template-columns:22px 1fr;
+      gap:10px;
+      align-items:flex-start;
+      margin-bottom:10px;
+    }
+
+    .check-row input{
+      width:20px;
+      height:20px;
+      margin:2px 0 0;
+      accent-color:var(--accent);
+    }
+
+    .check-row label{
+      font-size:13px;
+      color:#3f3a37;
+      cursor:pointer;
+    }
+
+    .check-row.optional label{
+      color:var(--muted);
+      font-size:12.5px;
+    }
+
+    .start-btn{
+      width:100%;
+      min-height:54px;
+      border:0;
+      border-radius:16px;
+      background:var(--accent);
+      color:#fff;
+      font-weight:800;
+      letter-spacing:.01em;
+      cursor:pointer;
+      transition:.2s ease;
+      box-shadow:0 9px 20px rgba(31,58,74,.20);
+    }
+
+    .start-btn:disabled{
+      cursor:not-allowed;
+      opacity:.38;
+      box-shadow:none;
+    }
+
+    .start-btn:not(:disabled):active{
+      transform:translateY(1px) scale(.997);
+    }
+
+    .microcopy{
+      margin-top:7px;
+      text-align:center;
+      font-size:10.5px;
+      color:#88817b;
+    }
+
+    .error{
+      display:none;
+      margin:8px 0 0;
+      font-size:11.5px;
+      color:var(--danger);
+      text-align:center;
+    }
+
+    .footer{
+      margin:24px 4px 0;
+      text-align:center;
+      font-size:11px;
+      color:#88817b;
+    }
+
+    @media (min-width:700px){
+      .page{padding-left:28px;padding-right:28px}
+      .quick-facts{grid-template-columns:repeat(3,1fr)}
+      .fact{grid-template-columns:1fr}
+      .fact-num{margin-bottom:6px}
+    }
+
+    @media (prefers-reduced-motion:reduce){
+      *{scroll-behavior:auto!important;transition:none!important}
+    }
+  </style>
+</head>
+
+<body>
+  <main class="page">
+
+    <div class="brand-row">
+      <div class="eyebrow">Flavor Interaction Experience</div>
+      <div class="version-chip" id="versionChip">FG-TOS-2026.08-v1.0</div>
+    </div>
+
+    <section aria-labelledby="mainTitle">
+      <h1 id="mainTitle">一盤，玩出你的風味性格</h1>
+
+      <p class="lead">
+        把真實品嘗中的感受，轉化成你的
+        <strong>Flavor Interaction Profile｜風味互動輪廓</strong>。
+        沒有標準答案，只有你這一次的感官回應。
+      </p>
+
+      <div class="tech-line" aria-label="風味互動科技核心詞">
+        <span>Flavor Interaction</span>
+        <span>Sensory Response</span>
+        <span>Preference Signal</span>
+      </div>
+    </section>
+
+    <section class="quick-facts" aria-label="開始前須知">
+      <article class="fact">
+        <div class="fact-num">01</div>
+        <div>
+          <strong>這是風味互動體驗</strong>
+          <p>結果是感官探索，不是醫療、心理或營養診斷。</p>
+        </div>
+      </article>
+
+      <article class="fact">
+        <div class="fact-num">02</div>
+        <div>
+          <strong>你的回應形成風味輪廓</strong>
+          <p>選擇、搭配與互動可形成匿名化風味資料。</p>
+        </div>
+      </article>
+
+      <article class="fact">
+        <div class="fact-num">03</div>
+        <div>
+          <strong>體驗內容受智慧財產權保護</strong>
+          <p>可分享個人結果，但不得未經授權大量擷取或商業重製。</p>
+        </div>
+      </article>
+    </section>
+
+    <section class="terms-card" aria-labelledby="termsTitle">
+      <div class="terms-head">
+        <h2 id="termsTitle">體驗使用與風味資料約定</h2>
+        <p>Flavor Experience & Data Terms｜請於本頁完成閱讀與同意</p>
+      </div>
+
+      <div class="terms-scroll" id="termsScroll" tabindex="0" aria-label="使用條款捲動區">
+        <h3>1｜這是一項風味互動體驗</h3>
+        <p>
+          「一盤，玩出你的風味性格」係由鉑金藍食品有限公司／冷餐管家
+          Your Gastronomie 所設計之數位風味互動體驗。
+        </p>
+        <p>
+          本體驗透過食材選擇、風味感受、搭配偏好與互動操作，
+          協助使用者探索個人的風味傾向。系統產生之風味性格、風味標籤、
+          搭配建議與其他結果屬體驗性及娛樂性資訊，不構成醫療、心理、
+          營養或其他專業診斷。
+        </p>
+
+        <h3>2｜風味互動資料</h3>
+        <p>進行體驗時，系統可能記錄以下資料：</p>
+        <ul>
+          <li>風味選擇與搭配順序</li>
+          <li>感官回應與偏好訊號</li>
+          <li>關卡答案與完成狀態</li>
+          <li>互動時間、遊戲版本與匿名工作階段識別碼</li>
+          <li>你主動提供的其他資料</li>
+        </ul>
+        <p>
+          上述資料可用於提供本次風味結果、改善體驗、分析匿名或去識別化之
+          風味偏好趨勢，以及開發新的風味互動、搭配與體驗服務。
+        </p>
+
+        <div class="notice">
+          若後續頁面另外蒐集出生年、語言、Email、電話、會員資料或其他可識別個人的資訊，
+          應於蒐集當下另行提供完整個資告知與選擇。
+        </div>
+
+        <h3>3｜你的結果可以分享，遊戲系統仍受保護</h3>
+        <p>
+          你可以保存或分享自己本次產生的風味結果畫面，例如用於個人紀錄、
+          社群分享或與朋友交流。
+        </p>
+        <p>
+          本網站與遊戲中的名稱、文案、題目表達、風味分類之具體呈現、
+          視覺設計、圖像、資訊編排、結果頁內容、程式碼及其他原創內容，
+          仍由其創作者或合法權利人保有相關智慧財產權。
+        </p>
+
+        <h3>4｜禁止未授權的大量擷取與商業重製</h3>
+        <p>在法律允許範圍內，未經書面授權，不得以商業目的：</p>
+        <ul>
+          <li>重製、改作、重新包裝或公開提供本體驗之受保護內容；</li>
+          <li>大量下載、擷取題目、結果、內容或資料；</li>
+          <li>利用爬蟲、Bot、自動化工具或其他方式大量取得本體驗內容；</li>
+          <li>逆向分析非公開程式、資料結構或服務介面；</li>
+          <li>將本體驗之受保護內容直接用於建立、訓練或開發競爭性產品或服務。</li>
+        </ul>
+        <p>
+          本約定不限制依法允許之合理使用、研究、評論或其他合法利用。
+        </p>
+
+        <h3>5｜Flavor Interaction Profile｜風味互動輪廓</h3>
+        <p>
+          本次產生的風味輪廓代表你在特定食材、順序、溫度、氣味與情境中的感官偏好，
+          不應被視為永久不變的人格或身分標籤。
+        </p>
+
+        <h3>6｜服務與版本更新</h3>
+        <p>
+          為改善體驗，我們可能調整關卡、食材、風味分類、互動邏輯、介面或結果呈現方式。
+          不同版本產生的風味結果可能不同。
+        </p>
+
+        <h3>7｜版本、權利與聯絡</h3>
+        <p>
+          本次條款版本為 <strong>FG-TOS-2026.08-v1.0</strong>。
+          本體驗相關數位內容與智慧財產權，依法由其創作者或合法權利人享有。
+        </p>
+        <p>
+          © 2026 鉑金藍食品有限公司 / 冷餐管家 Your Gastronomie
+        </p>
+      </div>
+
+      <div class="scroll-hint" id="scrollHint">
+        ↓ 條款可在此區域內捲動，不會離開本頁
+      </div>
+    </section>
+
+    <div class="footer">
+      Taste. Interact. Discover.｜把品嘗變成可互動的風味資料。
+    </div>
+  </main>
+
+  <aside class="consent-dock" aria-label="同意區">
+    <div class="check-row">
+      <input type="checkbox" id="requiredConsent" />
+      <label for="requiredConsent">
+        我已閱讀並同意「體驗使用與風味資料約定」，並同意為提供本次體驗所必要之資料處理。
+      </label>
+    </div>
+
+    <div class="check-row optional">
+      <input type="checkbox" id="researchConsent" />
+      <label for="researchConsent">
+        我同意將去識別化的風味互動資料用於產品研究、統計與體驗改善。
+        <strong>此項為選填，不影響進入遊戲。</strong>
+      </label>
+    </div>
+
+    <button class="start-btn" id="startBtn" type="button" disabled>
+      同意，開始我的風味探索 →
+    </button>
+
+    <div class="error" id="errorMsg" role="alert">
+      請先勾選必要同意項目。
+    </div>
+
+    <div class="microcopy">
+      系統將記錄條款版本、同意時間、遊戲版本與匿名 Session ID。
+    </div>
+  </aside>
+
+  <script>
+    /* ==========================================================
+       FLAVOR GAME CONSENT CONFIG
+       ========================================================== */
+
+    const CONFIG = {
+      termsVersion: "FG-TOS-2026.08-v1.0",
+      gameVersion: "FG-2026.08-v1.0",
+
+      // 下一頁遊戲網址。
+      // 若同一資料夾內第二頁叫 game.html，就保留 "./game.html"
+      nextPage: "./game.html",
+
+      // 【可選】你的資料庫 API endpoint
+      // 尚未建後端時保持空字串即可，資料仍會寫入 localStorage。
+      //
+      // 例如：
+      // apiEndpoint: "https://your-domain.com/api/consent"
+      // 或 Google Apps Script Web App URL
+      apiEndpoint: ""
+    };
+
+    const requiredConsent = document.getElementById("requiredConsent");
+    const researchConsent = document.getElementById("researchConsent");
+    const startBtn = document.getElementById("startBtn");
+    const errorMsg = document.getElementById("errorMsg");
+    const termsScroll = document.getElementById("termsScroll");
+    const scrollHint = document.getElementById("scrollHint");
+
+    document.getElementById("versionChip").textContent = CONFIG.termsVersion;
+
+    /* ==========================================================
+       SESSION ID
+       - 不使用姓名／Email 作為識別碼
+       - 優先使用 crypto.randomUUID()
+       ========================================================== */
+
+    function getOrCreateSessionId() {
+      const storageKey = "flavor_game_session_id";
+      let sessionId = localStorage.getItem(storageKey);
+
+      if (!sessionId) {
+        sessionId =
+          (window.crypto && crypto.randomUUID)
+            ? crypto.randomUUID()
+            : "fg-" + Date.now() + "-" + Math.random().toString(36).slice(2, 12);
+
+        localStorage.setItem(storageKey, sessionId);
+      }
+
+      return sessionId;
+    }
+
+    /* ==========================================================
+       CHECKBOX UI
+       ========================================================== */
+
+    requiredConsent.addEventListener("change", () => {
+      startBtn.disabled = !requiredConsent.checked;
+      if (requiredConsent.checked) {
+        errorMsg.style.display = "none";
+      }
+    });
+
+    /* 條款快捲到底時，把提示改掉 */
+    termsScroll.addEventListener("scroll", () => {
+      const distanceToBottom =
+        termsScroll.scrollHeight -
+        termsScroll.scrollTop -
+        termsScroll.clientHeight;
+
+      if (distanceToBottom < 40) {
+        scrollHint.textContent = "已到條款底部｜可直接在下方完成同意";
+      }
+    });
+
+    /* ==========================================================
+       LOCAL STORAGE
+       ========================================================== */
+
+    function saveConsentLocally(record) {
+      localStorage.setItem(
+        "flavor_game_consent_latest",
+        JSON.stringify(record)
+      );
+
+      // 同時保留歷史紀錄，方便日後稽核不同版本
+      const historyKey = "flavor_game_consent_history";
+      let history = [];
+
+      try {
+        history = JSON.parse(localStorage.getItem(historyKey)) || [];
+      } catch (e) {
+        history = [];
+      }
+
+      history.push(record);
+
+      // 避免無限成長，只保留最近 20 筆
+      if (history.length > 20) {
+        history = history.slice(-20);
+      }
+
+      localStorage.setItem(historyKey, JSON.stringify(history));
+    }
+
+    /* ==========================================================
+       OPTIONAL DATABASE POST
+       後端需接受 JSON：
+       {
+         session_id,
+         terms_version,
+         game_version,
+         accepted_at,
+         consent_required,
+         research_consent,
+         source,
+         user_agent
+       }
+       ========================================================== */
+
+    async function syncConsentToDatabase(record) {
+      if (!CONFIG.apiEndpoint) {
+        return {
+          ok: false,
+          skipped: true,
+          reason: "API endpoint not configured"
+        };
+      }
+
+      const response = await fetch(CONFIG.apiEndpoint, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(record)
+      });
+
+      if (!response.ok) {
+        throw new Error("Consent API error: " + response.status);
+      }
+
+      return {
+        ok: true,
+        status: response.status
+      };
+    }
+
+    /* ==========================================================
+       START
+       ========================================================== */
+
+    startBtn.addEventListener("click", async () => {
+      if (!requiredConsent.checked) {
+        errorMsg.style.display = "block";
+        return;
+      }
+
+      startBtn.disabled = true;
+      startBtn.textContent = "正在建立風味體驗…";
+
+      const record = {
+        session_id: getOrCreateSessionId(),
+        terms_version: CONFIG.termsVersion,
+        game_version: CONFIG.gameVersion,
+        accepted_at: new Date().toISOString(),
+        consent_required: true,
+        research_consent: researchConsent.checked,
+        source: "flavor-game-entry",
+        user_agent: navigator.userAgent
+      };
+
+      // 1. 一定先存本機
+      saveConsentLocally(record);
+
+      // 2. 有 API 才同步資料庫
+      try {
+        await syncConsentToDatabase(record);
+
+        localStorage.setItem(
+          "flavor_game_consent_sync_status",
+          JSON.stringify({
+            synced: true,
+            synced_at: new Date().toISOString()
+          })
+        );
+
+      } catch (error) {
+        console.warn("資料庫同步失敗，已保留本機同意紀錄。", error);
+
+        localStorage.setItem(
+          "flavor_game_consent_sync_status",
+          JSON.stringify({
+            synced: false,
+            failed_at: new Date().toISOString(),
+            message: String(error.message || error)
+          })
+        );
+      }
+
+      // 3. 進入遊戲
+      window.location.href = CONFIG.nextPage;
+    });
+  </script>
+</body>
+</html>
