@@ -431,5 +431,87 @@
     go(0);
   }
 </script>
+  <!-- Google Sheet 資料傳送測試 -->
+
+<button
+  id="testGoogleSheet"
+  style="
+    display:block;
+    margin:30px auto;
+    padding:14px 24px;
+    font-size:16px;
+    cursor:pointer;
+  "
+>
+  測試傳送資料
+</button>
+
+<script>
+
+const GOOGLE_SHEET_URL =
+"https://script.google.com/macros/s/AKfycby4aZn6VSqoCAY5s5-r0xrVm_YPsye9hxUmUaCMUZfo4DKAEn3fh9AQmfk8sIWTXQZC/exec";
+
+
+function sendToGoogleSheet(data) {
+
+  fetch(GOOGLE_SHEET_URL, {
+
+    method: "POST",
+
+    mode: "no-cors",
+
+    headers: {
+      "Content-Type": "text/plain;charset=utf-8"
+    },
+
+    body: JSON.stringify(data)
+
+  })
+  .then(() => {
+    console.log("資料已送出");
+    alert("測試資料已送出，請去 Google Sheet 查看");
+  })
+  .catch(error => {
+    console.error("傳送失敗：", error);
+    alert("資料傳送失敗");
+  });
+
+}
+
+
+document
+.getElementById("testGoogleSheet")
+.addEventListener("click", function() {
+
+  const testData = {
+
+    sessionId: "TEST001",
+
+    players: 1,
+
+    playerName: "測試玩家",
+
+    cheese: "高達 Gouda",
+
+    original: "奶香",
+
+    sweet: "蜂蜜",
+
+    salty: "Salami",
+
+    sour: "風乾番茄",
+
+    favorite: "高達＋蜂蜜",
+
+    personality: "甜香探索型"
+
+  };
+
+
+  sendToGoogleSheet(testData);
+
+});
+
+</script>
 </body>
 </html>
