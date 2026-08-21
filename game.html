@@ -431,7 +431,6 @@
     go(0);
   }
 </script>
-  <!-- Google Sheet 資料傳送測試 -->
 
 <button
   id="testGoogleSheet"
@@ -440,7 +439,6 @@
     margin:30px auto;
     padding:14px 24px;
     font-size:16px;
-    cursor:pointer;
   "
 >
   測試傳送資料
@@ -468,12 +466,16 @@ function sendToGoogleSheet(data) {
 
   })
   .then(() => {
-    console.log("資料已送出");
-    alert("測試資料已送出，請去 Google Sheet 查看");
+
+    alert("資料已送出，現在去 Google Sheet 看看");
+
   })
   .catch(error => {
-    console.error("傳送失敗：", error);
-    alert("資料傳送失敗");
+
+    console.error(error);
+
+    alert("傳送失敗");
+
   });
 
 }
@@ -499,7 +501,7 @@ document
 
     salty: "Salami",
 
-    sour: "風乾番茄",
+    sour: "酸味測試",
 
     favorite: "高達＋蜂蜜",
 
@@ -511,20 +513,6 @@ document
   sendToGoogleSheet(testData);
 
 });
-
-  
-<button id="testGoogleSheet">
-  測試傳送資料
-</button>
-
-<script>
-
-const GOOGLE_SHEET_URL =
-"https://script.google.com/macros/s/AKfycby4aZn6VSqoCAY5s5-r0xrVm_YPsye9hxUmUaCMUZfo4DKAEn3fh9AQmfk8sIWTXQZC/exec";
-
-/* 傳送程式 */
-
-</script>
 
 </script>
 </body>
