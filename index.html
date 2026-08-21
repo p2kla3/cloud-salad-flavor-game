@@ -702,35 +702,7 @@
       window.location.href = CONFIG.nextPage;
     });
   </script>
-  <script>
-const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycby4aZn6VSqoCAY5s5-r0xrVm_YPsye9hxUmUaCMUZfo4DKAEn3fh9AQmfk8sIW";
 
-function sendToGoogleSheet() {
-
-  const data = {
-    sessionId: "TEST001",
-    players: 1,
-    playerName: "測試玩家",
-    cheese: "高達",
-    original: "奶香",
-    sweet: "蜂蜜",
-    salty: "Salami",
-    sour: "風乾番茄",
-    favorite: "高達＋蜂蜜",
-    personality: "甜香探索型"
-  };
-
-  fetch(GOOGLE_SCRIPT_URL, {
-    method: "POST",
-    mode: "no-cors",
-    headers: {
-      "Content-Type": "text/plain;charset=utf-8"
-    },
-    body: JSON.stringify(data)
-  });
-
-  alert("測試資料已送出");
-}
 </script>
 </body>
 </html>
